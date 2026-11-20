@@ -1,17 +1,18 @@
 [build]
   base = "apps/web"
-  command = "npm run build && node ../../scripts/fix-netlify-paths.js"
-  publish = "apps/web/.next"
+  command = "npm run build"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
+  # Disable Next.js plugin - we use static export
+  NETLIFY_NEXT_PLUGIN_DISABLE = "true"
 
-[[redirects]]
-  from = "/api/*"
-  to = "https://wlm-photo-mvp-api.fly.dev/api/:splat"
-  status = 200
-  force = true
+[functions]
+  # Disable function generation for static export
+  node_bundler = "esbuild"
+  external_node_modules = []
 
 [[headers]]
   for = "/*"
