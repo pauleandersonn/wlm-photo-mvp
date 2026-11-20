@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import get_settings
 from .db import init_db
-from .routers import events, memories, jobs, upload, tasks
+from .routers import events, memories, jobs, upload, tasks, ai_generation
 
 
 @asynccontextmanager
@@ -35,6 +35,7 @@ app.include_router(memories.router, prefix=settings.api_v1_prefix)
 app.include_router(jobs.router, prefix=settings.api_v1_prefix)
 app.include_router(upload.router, prefix=settings.api_v1_prefix)
 app.include_router(tasks.router, prefix=settings.api_v1_prefix)
+app.include_router(ai_generation.router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/health")
