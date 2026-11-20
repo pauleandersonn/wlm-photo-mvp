@@ -1,18 +1,13 @@
 [build]
   base = "apps/web"
   command = "npm run build"
-  publish = "out"
+  publish = "apps/web/out"
 
 [build.environment]
   NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
   # Disable Next.js plugin - we use static export
   NETLIFY_NEXT_PLUGIN_DISABLE = "true"
-
-[functions]
-  # Disable function generation for static export
-  node_bundler = "esbuild"
-  external_node_modules = []
 
 [[headers]]
   for = "/*"
