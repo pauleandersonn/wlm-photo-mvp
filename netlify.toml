@@ -1,6 +1,6 @@
 [build]
   base = "apps/web"
-  command = "npm run build"
+  command = "npm run build && node ../../scripts/fix-netlify-paths.js"
   publish = "apps/web/.next"
 
 [build.environment]
