@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import {
   Camera,
   Upload,
@@ -44,7 +44,7 @@ export function CaptureStation({
   const [selectedTemplate, setSelectedTemplate] = useState(event.themeStyle);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const fileInputRef = useState<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleTakeCameraPhoto = useCallback(async () => {
     try {

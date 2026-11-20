@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useRef } from 'react';
 import { WeddingEvent } from '@/types';
 import { THEME_STYLES } from '@/lib/constants';
-import { Flow } from 'flow-sdk';
 import {
   Calendar,
   Heart,
@@ -36,23 +35,11 @@ export function EventAdmin({ event, onUpdateEvent, memoriesCount }: EventAdminPr
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'info' | 'architecture'>('info');
 
-  const handleSelectFromGallery = async () => {
-    try {
-      const item = await Flow.media.select({ filter: 'image' });
-      if (item) {
-        const url = `data:${item.mimeType};base64,${item.base64}`;
-        setCouplePhotoUrl(url);
-        setCoupleMediaId(item.mediaId);
-        onUpdateEvent({
-          ...event,
-          couplePhotoUrl: url,
-          coupleMediaId: item.mediaId,
-        });
-      }
-    } catch (err) {
-      console.error('Erro ao selecionar foto dos noivos:', err);
-    }
+  const handleSelectFromGallery = () => {
+    couplePhotoInputRef.current?.click();
   };
+
+  const couplePhotoInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -272,14 +259,17 @@ export function EventAdmin({ event, onUpdateEvent, memoriesCount }: EventAdminPr
                     )}
                   </div>
                   <div className="flex flex-wrap gap-2 mt-3 w-full justify-center">
-                    <button
-                      type="button"
-                      onClick={handleSelectFromGallery}
-                      className="px-3 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium flex items-center gap-1.5 transition shadow-sm"
-                    >
+                    <label className="px-3 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-medium flex items-center gap-1.5 transition shadow-sm cursor-pointer">
                       <Upload size={14} />
-                      Galeria do Flow
-                    </button>
+                      Galeria
+                      <input
+                        ref={couplePhotoInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                      />
+                    </label>
                     <label className="px-3 py-2 bg-white hover:bg-stone-100 border border-stone-300 text-stone-700 rounded-lg text-xs font-medium flex items-center gap-1.5 transition cursor-pointer">
                       <ImageIcon size={14} />
                       Arquivo Local
